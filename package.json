@@ -1,0 +1,57 @@
+{
+  "name": "@indutny/simple-windows-notifications",
+  "version": "1.0.0",
+  "description": "Simple Windows Notifications",
+  "main": "dist/index.js",
+  "types": "index.d.ts",
+  "module": "dist/esm/index.js",
+  "files": [
+    "addon.cpp",
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "watch": "npm run build:cjs -- --watch",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc",
+    "build:esm": "tsc --module es2020 --declaration false --outDir dist/esm",
+    "build:docs": "typedoc src/index.ts --includeVersion",
+    "format": "prettier --cache --write .",
+    "lint": "npm run check:eslint && npm run check:format",
+    "check:eslint": "eslint --cache .",
+    "check:format": "prettier --cache --check .",
+    "prepublishOnly": "npm run clean && npm run build && npm run lint",
+    "clean": "rm -rf dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/indutny/simple-windows-notifications.git"
+  },
+  "keywords": [
+    "winrt",
+    "notifications",
+    "windows"
+  ],
+  "author": "Fedor Indutny <238531+indutny@users.noreply.github.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/indutny/simple-windows-notifications/issues"
+  },
+  "homepage": "https://github.com/indutny/simple-windows-notifications#readme",
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "node-addon-api": "^8.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@types/bindings": "^1.5.5",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^22.5.0",
+    "eslint": "^9.9.1",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.26.6",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0"
+  }
+}
