@@ -1,8 +1,8 @@
 {
   "targets": [{
     "target_name": "addon",
-    "include_dirs": [
-      "<!(node -e \"require('node-addon-api').include\")",
+    "dependencies": [
+      "<!(node -p \"require('node-addon-api').targets\"):node_addon_api_except",
     ],
     "conditions": [
       ["OS=='win'", {
