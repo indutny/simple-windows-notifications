@@ -20,13 +20,13 @@ import {
 clearHistory({ appId: 'org.indutny.test', tag: 'tag', group: 'group' });
 showNotification(
   `<toast>
-  <visual>
-    <binding template="ToastText02">
-      <text id="1">headlineText</text>
-      <text id="2">bodyText</text>
-    </binding>
-  </visual>
-</toast>`,
+    <visual>
+      <binding template="ToastText02">
+        <text id="1">headlineText</text>
+        <text id="2">bodyText</text>
+      </binding>
+    </visual>
+  </toast>`,
   { appId: 'org.indutny.test', tag: 'tag', group: 'group' },
 );
 ```
