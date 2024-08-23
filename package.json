@@ -8,7 +8,8 @@
   "files": [
     "addon.cpp",
     "dist",
-    "README.md"
+    "README.md",
+    "binding.gyp"
   ],
   "scripts": {
     "watch": "npm run build:cjs -- --watch",
