@@ -1,6 +1,7 @@
 # @indutny/simple-windows-notifications
 
 [![npm](https://img.shields.io/npm/v/@indutny/simple-windows-notifications)](https://www.npmjs.com/package/@indutny/simple-windows-notifications)
+
 [API docs](https://indutny.github.io/simple-windows-notifications).
 
 ## Installation
