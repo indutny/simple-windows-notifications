@@ -18,6 +18,7 @@ import {
 } from '@indutny/simple-windows-notifications';
 
 clearHistory({ appId: 'org.indutny.test', tag: 'tag', group: 'group' });
+
 showNotification(
   `<toast>
     <visual>
@@ -30,6 +31,7 @@ showNotification(
   { appId: 'org.indutny.test', tag: 'tag', group: 'group' },
 );
 ```
+See https://learn.microsoft.com/en-us/previous-versions/windows/apps/hh761494(v=win.10)?redirectedfrom=MSDN#toasttext02
 
 ## Limitations
 
