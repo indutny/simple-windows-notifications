@@ -11,7 +11,7 @@ using namespace Windows::Data::Xml::Dom;
 void ShowNotification(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
-  if (info.Length() != 4) {
+  if (info.Length() != 5) {
     throw Napi::Error::New(env, "Invalid argument count");
   }
 
@@ -19,16 +19,18 @@ void ShowNotification(const Napi::CallbackInfo& info) {
   auto toastXml = info[1].As<Napi::String>();
   auto tag = info[2].As<Napi::String>();
   auto group = info[3].As<Napi::String>();
-  if (!appId.IsString() || !toastXml.IsString() || !tag.IsString() ||
-      !group.IsString()) {
+  auto expiresOnReboot = info[4].As<Napi::Boolean>();
+  if (!appId.IsString() || !toastXml.IsString() ||
+      !tag.IsString() || !group.IsString() || !expiresOnReboot.IsBoolean()) {
     throw Napi::Error::New(env, "Invalid argument type");
   }
 
   XmlDocument xml;
   xml.LoadXml(to_hstring(toastXml.Utf8Value()));
   ToastNotification notification(xml);
-  notification.Tag(to_hstring(tag.Utf8Value()));
-  notification.Group(to_hstring(group.Utf8Value()));
+  notification.Tag(to_hstring(tag.As<Napi::String>.Utf8Value()));
+  notification.Group(to_hstring(group.As<Napi::String>.Utf8Value()));
+  notification.ExpiresOnReboot(expiresOnReboot.Value());
 
   auto notifier = ToastNotificationManager::CreateToastNotifier(
       to_hstring(appId.Utf8Value()));
@@ -36,7 +38,7 @@ void ShowNotification(const Napi::CallbackInfo& info) {
 }
 
 
-void ClearHistory(const Napi::CallbackInfo& info) {
+void RemoveNotification(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   if (info.Length() != 3) {
     throw Napi::Error::New(env, "Invalid argument count");
@@ -45,13 +47,28 @@ void ClearHistory(const Napi::CallbackInfo& info) {
   auto appId = info[0].As<Napi::String>();
   auto tag = info[1].As<Napi::String>();
   auto group = info[2].As<Napi::String>();
-  if (!appId.IsString() || !tag.IsString() || !group.IsString()) {
+  if (!appId.IsString() || !tag.IsString() ||! !group.IsString()) {
     throw Napi::Error::New(env, "Invalid argument type");
   }
 
   ToastNotificationManager::History().Remove(
       to_hstring(tag.Utf8Value()),
       to_hstring(group.Utf8Value()),
+      to_hstring(appId.Utf8Value()));
+}
+
+void ClearHistory(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  if (info.Length() != 1) {
+    throw Napi::Error::New(env, "Invalid argument count");
+  }
+
+  auto appId = info[0].As<Napi::String>();
+  if (!appId.IsString()) {
+    throw Napi::Error::New(env, "Invalid argument type");
+  }
+
+  ToastNotificationManager::History().Clear(
       to_hstring(appId.Utf8Value()));
 }
 
@@ -69,6 +86,8 @@ void SendDummyKeystroke(const Napi::CallbackInfo& info) {
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
   exports.Set(Napi::String::New(env, "showNotification"),
       Napi::Function::New(env, ShowNotification));
+  exports.Set(Napi::String::New(env, "removeNotification"),
+      Napi::Function::New(env, RemoveNotification));
   exports.Set(Napi::String::New(env, "clearHistory"),
       Napi::Function::New(env, ClearHistory));
   exports.Set(Napi::String::New(env, "sendDummyKeystroke"),

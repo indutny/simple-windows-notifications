@@ -1,13 +1,15 @@
 import loadBinding from 'bindings';
 
 type BindingType = Readonly<{
-  clearHistory(appId: string, tag: string, group: string): void;
   showNotification(
     appId: string,
     toastXml: string,
     tag: string,
     group: string,
+    expiresOnReboot: boolean,
   ): void;
+  removeNotification(appId: string, tag: string, group: string): void;
+  clearHistory(appId: string): void;
   sendDummyKeystroke(): void;
 }>;
 
@@ -16,29 +18,102 @@ if (process.platform === 'win32') {
   binding = loadBinding('simple-windows-notifications');
 }
 
-export type NotificationData = Readonly<{
-  appId: string;
+/**
+ * Options for showing a notification.
+ */
+export type ShowNotificationOptionsType = Readonly<{
+  /**
+   * Notification tag string, used to identify notifications when removing
+   * them.
+   */
   tag: string;
+
+  /**
+   * Notification group string, used to identify notifications when removing
+   * them.
+   */
+  group: string;
+
+  /**
+   * If true - the notification will be cleared after reboot.
+   */
+  expiresOnReboot?: boolean;
+}>;
+
+/**
+ * Options for removing a notification.
+ */
+export type RemoveNotificationOptionsType = Readonly<{
+  /**
+   * Notification tag string, used to identify notifications when removing
+   * them.
+   */
+  tag: string;
+
+  /**
+   * Notification group string, used to identify notifications when removing
+   * them.
+   */
   group: string;
 }>;
 
-export function clearHistory({ appId, tag, group }: NotificationData): void {
-  if (!binding) {
-    throw new Error('This library works only on Windows');
+/**
+ * Main class
+ */
+export class Notifier {
+  /**
+   * @constructor
+   * @param appId - Application id, typically: 'org.nodejs.node'
+   */
+  constructor(private readonly appId: string) {}
+
+  /**
+   * Show a notification with a given toast XML.
+   *
+   * @param toastXml - See https://learn.microsoft.com/en-us/previous-versions/windows/apps/hh761494(v=win.10)
+   * @param options - Notification data use to identify the notification.
+   */
+  public show(
+    toastXml: string,
+    { tag, group, expiresOnReboot = false }: ShowNotificationOptionsType,
+  ) {
+    if (!binding) {
+      throw new Error('This library works only on Windows');
+    }
+    binding.showNotification(this.appId, toastXml, tag, group, expiresOnReboot);
   }
-  binding.clearHistory(appId, tag, group);
+
+  /**
+   * Remove a notification with a given tag/group
+   *
+   * @param toastXml - See https://learn.microsoft.com/en-us/previous-versions/windows/apps/hh761494(v=win.10)
+   * @param options - Notification data use to identify the notification.
+   */
+  public remove({ tag, group }: RemoveNotificationOptionsType): void {
+    if (!binding) {
+      throw new Error('This library works only on Windows');
+    }
+    binding.removeNotification(this.appId, tag, group);
+  }
+
+  /**
+   * Remove all notifications sent by this app.
+   */
+  public clear(): void {
+    if (!binding) {
+      throw new Error('This library works only on Windows');
+    }
+    binding.clearHistory(this.appId);
+  }
 }
 
-export function showNotification(
-  toastXml: string,
-  { appId, tag, group }: NotificationData,
-) {
-  if (!binding) {
-    throw new Error('This library works only on Windows');
-  }
-  binding.showNotification(appId, toastXml, tag, group);
-}
-
+/**
+ * Send a dummy keystroke to the app. Needed when starting a second instance
+ * of the app from the notification manager and bringing the first instance to
+ * the foreground.
+ *
+ * See: https://www.npmjs.com/package/windows-dummy-keystroke#but-why
+ */
 export function sendDummyKeystroke() {
   if (!binding) {
     throw new Error('This library works only on Windows');
