@@ -8,6 +8,7 @@ type BindingType = Readonly<{
     tag: string,
     group: string,
   ): void;
+  sendDummyKeystroke(): void;
 }>;
 
 let binding: BindingType | undefined;
@@ -36,4 +37,11 @@ export function showNotification(
     throw new Error('This library works only on Windows');
   }
   binding.showNotification(appId, toastXml, tag, group);
+}
+
+export function sendDummyKeystroke() {
+  if (!binding) {
+    throw new Error('This library works only on Windows');
+  }
+  binding.sendDummyKeystroke();
 }
