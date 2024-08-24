@@ -13,9 +13,7 @@ npm install @indutny/simple-windows-notifications
 ## Usage
 
 ```js
-import {
-  Notifier,
-} from '@indutny/simple-windows-notifications';
+import { Notifier } from '@indutny/simple-windows-notifications';
 
 const notifier = new Notifier('org.indutny.test');
 notifier.clearAll();
