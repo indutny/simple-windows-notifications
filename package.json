@@ -8,6 +8,7 @@
   "files": [
     "addon.cpp",
     "dist",
+    "!dist/tsconfig.tsbuildinfo",
     "README.md",
     "binding.gyp"
   ],
