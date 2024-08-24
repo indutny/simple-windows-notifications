@@ -1,5 +1,6 @@
 #include <winrt/windows.ui.notifications.h>
 #include <winrt/windows.data.xml.dom.h>
+#include <windows.h>
 
 #include "napi.h"
 
@@ -62,7 +63,7 @@ void SendDummyKeystroke(const Napi::CallbackInfo& info) {
   inputs[1] = inputs[0];
   inputs[1].ki.dwFlags |= KEYEVENTF_KEYUP;  // Key up
 
-  ::SendInput(2, inputs, sizeof(inputs[0]));
+  SendInput(2, inputs, sizeof(inputs[0]));
 }
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
