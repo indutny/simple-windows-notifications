@@ -28,8 +28,8 @@ void ShowNotification(const Napi::CallbackInfo& info) {
   XmlDocument xml;
   xml.LoadXml(to_hstring(toastXml.Utf8Value()));
   ToastNotification notification(xml);
-  notification.Tag(to_hstring(tag.As<Napi::String>.Utf8Value()));
-  notification.Group(to_hstring(group.As<Napi::String>.Utf8Value()));
+  notification.Tag(to_hstring(tag.Utf8Value()));
+  notification.Group(to_hstring(group.Utf8Value()));
   notification.ExpiresOnReboot(expiresOnReboot.Value());
 
   auto notifier = ToastNotificationManager::CreateToastNotifier(
