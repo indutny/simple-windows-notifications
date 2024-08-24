@@ -9,6 +9,7 @@
     "addon.cpp",
     "dist",
     "!dist/tsconfig.tsbuildinfo",
+    "!dist/esm/tsconfig.tsbuildinfo",
     "README.md",
     "binding.gyp"
   ],
