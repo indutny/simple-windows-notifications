@@ -99,7 +99,7 @@ export class Notifier {
   /**
    * Remove all notifications sent by this app.
    */
-  public clear(): void {
+  public clearAll(): void {
     if (!binding) {
       throw new Error('This library works only on Windows');
     }

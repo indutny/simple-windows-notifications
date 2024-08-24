@@ -14,23 +14,24 @@ npm install @indutny/simple-windows-notifications
 
 ```js
 import {
-  clearHistory,
-  showNotification,
+  Notifier,
 } from '@indutny/simple-windows-notifications';
 
-clearHistory({ appId: 'org.indutny.test', tag: 'tag', group: 'group' });
+const notifier = new Notifier('org.indutny.test');
+notifier.clearAll();
 
-showNotification(
-  `<toast>
-    <visual>
-      <binding template="ToastText02">
-        <text id="1">headlineText</text>
-        <text id="2">bodyText</text>
-      </binding>
-    </visual>
-  </toast>`,
-  { appId: 'org.indutny.test', tag: 'tag', group: 'group' },
-);
+notifier.remove({ tag: 'tag', group: 'group' });
+
+const toastXml = `<toast>
+  <visual>
+    <binding template="ToastText02">
+      <text id="1">headlineText</text>
+      <text id="2">bodyText</text>
+    </binding>
+  </visual>
+</toast>`;
+
+notifier.show(toastXml, { tag: 'tag', group: 'group' });
 ```
 
 See https://learn.microsoft.com/en-us/previous-versions/windows/apps/hh761494(v=win.10)

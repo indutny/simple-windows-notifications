@@ -47,7 +47,7 @@ void RemoveNotification(const Napi::CallbackInfo& info) {
   auto appId = info[0].As<Napi::String>();
   auto tag = info[1].As<Napi::String>();
   auto group = info[2].As<Napi::String>();
-  if (!appId.IsString() || !tag.IsString() ||! !group.IsString()) {
+  if (!appId.IsString() || !tag.IsString() || !group.IsString()) {
     throw Napi::Error::New(env, "Invalid argument type");
   }
 
