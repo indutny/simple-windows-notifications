@@ -13,7 +13,7 @@ type BindingType = Readonly<{
 
 let binding: BindingType | undefined;
 if (process.platform === 'win32') {
-  binding = loadBinding('addon');
+  binding = loadBinding('simple-windows-notifications');
 }
 
 export type NotificationData = Readonly<{
