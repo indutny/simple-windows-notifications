@@ -15,9 +15,6 @@
       "VCCLCompilerTool": {
         "ExceptionHandling": 1, # /EHsc,
         "RuntimeLibrary": "2", # /MD
-        "AdditionalOptions": [
-          "/std:c++20",
-        ],
       },
     },
   }],
