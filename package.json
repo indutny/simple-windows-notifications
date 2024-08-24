@@ -1,6 +1,6 @@
 {
   "name": "@indutny/simple-windows-notifications",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple Windows Notifications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
