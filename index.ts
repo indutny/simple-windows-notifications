@@ -112,6 +112,7 @@ export class Notifier {
  * of the app from the notification manager and bringing the first instance to
  * the foreground.
  *
+ * See: https://chromium.googlesource.com/chromium/src.git/+/5c432815bbb22210f7c995bbb508359f64baadf5/chrome/notification_helper/notification_activator.cc#155
  * See: https://www.npmjs.com/package/windows-dummy-keystroke#but-why
  */
 export function sendDummyKeystroke() {

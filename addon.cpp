@@ -73,6 +73,7 @@ void ClearHistory(const Napi::CallbackInfo& info) {
 }
 
 void SendDummyKeystroke(const Napi::CallbackInfo& info) {
+  // See https://chromium.googlesource.com/chromium/src.git/+/5c432815bbb22210f7c995bbb508359f64baadf5/chrome/notification_helper/notification_activator.cc#155
   INPUT inputs[2] = {};
 
   inputs[0].type = INPUT_KEYBOARD;
