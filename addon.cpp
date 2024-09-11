@@ -25,16 +25,20 @@ void ShowNotification(const Napi::CallbackInfo& info) {
     throw Napi::Error::New(env, "Invalid argument type");
   }
 
-  XmlDocument xml;
-  xml.LoadXml(to_hstring(toastXml.Utf8Value()));
-  ToastNotification notification(xml);
-  notification.Tag(to_hstring(tag.Utf8Value()));
-  notification.Group(to_hstring(group.Utf8Value()));
-  notification.ExpiresOnReboot(expiresOnReboot.Value());
+  try {
+    XmlDocument xml;
+    xml.LoadXml(to_hstring(toastXml.Utf8Value()));
+    ToastNotification notification(xml);
+    notification.Tag(to_hstring(tag.Utf8Value()));
+    notification.Group(to_hstring(group.Utf8Value()));
+    notification.ExpiresOnReboot(expiresOnReboot.Value());
 
-  auto notifier = ToastNotificationManager::CreateToastNotifier(
-      to_hstring(appId.Utf8Value()));
-  notifier.Show(notification);
+    auto notifier = ToastNotificationManager::CreateToastNotifier(
+        to_hstring(appId.Utf8Value()));
+    notifier.Show(notification);
+  } catch (...) {
+    throw Napi::Error::New(env, "C++ exception");
+  }
 }
 
 
@@ -51,10 +55,14 @@ void RemoveNotification(const Napi::CallbackInfo& info) {
     throw Napi::Error::New(env, "Invalid argument type");
   }
 
-  ToastNotificationManager::History().Remove(
-      to_hstring(tag.Utf8Value()),
-      to_hstring(group.Utf8Value()),
-      to_hstring(appId.Utf8Value()));
+  try {
+    ToastNotificationManager::History().Remove(
+        to_hstring(tag.Utf8Value()),
+        to_hstring(group.Utf8Value()),
+        to_hstring(appId.Utf8Value()));
+  } catch (...) {
+    throw Napi::Error::New(env, "C++ exception");
+  }
 }
 
 void ClearHistory(const Napi::CallbackInfo& info) {
@@ -68,8 +76,12 @@ void ClearHistory(const Napi::CallbackInfo& info) {
     throw Napi::Error::New(env, "Invalid argument type");
   }
 
-  ToastNotificationManager::History().Clear(
-      to_hstring(appId.Utf8Value()));
+  try {
+    ToastNotificationManager::History().Clear(
+        to_hstring(appId.Utf8Value()));
+  } catch (...) {
+    throw Napi::Error::New(env, "C++ exception");
+  }
 }
 
 void SendDummyKeystroke(const Napi::CallbackInfo& info) {
