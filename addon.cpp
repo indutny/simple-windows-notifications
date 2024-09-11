@@ -1,12 +1,25 @@
 #include <winrt/windows.ui.notifications.h>
 #include <winrt/windows.data.xml.dom.h>
 #include <windows.h>
+#include <string.h>
 
 #include "napi.h"
 
 using namespace winrt;
 using namespace Windows::UI::Notifications;
 using namespace Windows::Data::Xml::Dom;
+
+Napi::Error FromWinRTError(Napi::Env env, const winrt::hresult_error& ex) {
+    static char buf[1024];
+    auto code = static_cast<int>(ex.code());
+    auto message = ex.message();
+
+    snprintf(
+        buf,
+        sizeof(buf),
+        "WinRT exception code: %d, msg: %s", code, message.c_str());
+    throw Napi::Error::New(env, buf);
+}
 
 void ShowNotification(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
@@ -36,8 +49,8 @@ void ShowNotification(const Napi::CallbackInfo& info) {
     auto notifier = ToastNotificationManager::CreateToastNotifier(
         to_hstring(appId.Utf8Value()));
     notifier.Show(notification);
-  } catch (...) {
-    throw Napi::Error::New(env, "C++ exception");
+  } catch (winrt::hresult_error const& ex) {
+    throw FromWinRTError(env, ex);
   }
 }
 
@@ -60,8 +73,8 @@ void RemoveNotification(const Napi::CallbackInfo& info) {
         to_hstring(tag.Utf8Value()),
         to_hstring(group.Utf8Value()),
         to_hstring(appId.Utf8Value()));
-  } catch (...) {
-    throw Napi::Error::New(env, "C++ exception");
+  } catch (winrt::hresult_error const& ex) {
+    throw FromWinRTError(env, ex);
   }
 }
 
@@ -79,8 +92,8 @@ void ClearHistory(const Napi::CallbackInfo& info) {
   try {
     ToastNotificationManager::History().Clear(
         to_hstring(appId.Utf8Value()));
-  } catch (...) {
-    throw Napi::Error::New(env, "C++ exception");
+  } catch (winrt::hresult_error const& ex) {
+    throw FromWinRTError(env, ex);
   }
 }
 
