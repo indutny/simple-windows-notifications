@@ -1,5 +1,6 @@
-#include <winrt/windows.ui.notifications.h>
 #include <winrt/windows.data.xml.dom.h>
+#include <winrt/windows.foundation.metadata.h>
+#include <winrt/windows.ui.notifications.h>
 #include <windows.h>
 #include <string.h>
 
@@ -8,6 +9,13 @@
 using namespace winrt;
 using namespace Windows::UI::Notifications;
 using namespace Windows::Data::Xml::Dom;
+
+void EnsureNotificationsSupported(Napi::Env env) {
+  if (!Windows::Foundation::Metadata::ApiInformation::IsApiContractPresent(
+        L"Windows.Foundation.UniversalApiContract", 65536)) {
+    throw Napi::Error::New(env, "Unsupported on current OS");
+  }
+}
 
 Napi::Error FromWinRTError(Napi::Env env, const winrt::hresult_error& ex) {
     static char buf[1024];
@@ -37,6 +45,8 @@ void ShowNotification(const Napi::CallbackInfo& info) {
       !tag.IsString() || !group.IsString() || !expiresOnReboot.IsBoolean()) {
     throw Napi::Error::New(env, "Invalid argument type");
   }
+
+  EnsureNotificationsSupported(env);
 
   try {
     XmlDocument xml;
@@ -68,6 +78,8 @@ void RemoveNotification(const Napi::CallbackInfo& info) {
     throw Napi::Error::New(env, "Invalid argument type");
   }
 
+  EnsureNotificationsSupported(env);
+
   try {
     ToastNotificationManager::History().Remove(
         to_hstring(tag.Utf8Value()),
@@ -88,6 +100,8 @@ void ClearHistory(const Napi::CallbackInfo& info) {
   if (!appId.IsString()) {
     throw Napi::Error::New(env, "Invalid argument type");
   }
+
+  EnsureNotificationsSupported(env);
 
   try {
     ToastNotificationManager::History().Clear(
