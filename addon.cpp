@@ -54,7 +54,9 @@ void ShowNotification(const Napi::CallbackInfo& info) {
     ToastNotification notification(xml);
     notification.Tag(to_hstring(tag.Utf8Value()));
     notification.Group(to_hstring(group.Utf8Value()));
-    notification.ExpiresOnReboot(expiresOnReboot.Value());
+    if (expiresOnReboot.Value() == true) {
+      notification.ExpiresOnReboot(true);
+    }
 
     auto notifier = ToastNotificationManager::CreateToastNotifier(
         to_hstring(appId.Utf8Value()));
