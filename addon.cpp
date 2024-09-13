@@ -24,15 +24,15 @@ void EnsureNotificationsSupported(Napi::Env env) {
 }
 
 Napi::Error FromWinRTError(Napi::Env env, const winrt::hresult_error& ex) {
-    static char buf[1024];
-    auto code = static_cast<int>(ex.code());
-    auto message = ex.message();
+  static char buf[1024];
+  auto code = static_cast<int>(ex.code());
+  auto message = ex.message();
 
-    snprintf(
-        buf,
-        sizeof(buf),
-        "WinRT exception code: %d, msg: %s", code, message.c_str());
-    throw Napi::Error::New(env, buf);
+  snprintf(
+    buf,
+    sizeof(buf),
+    "WinRT exception code: %d, msg: %s", code, message.c_str());
+  throw Napi::Error::New(env, buf);
 }
 
 void ShowNotification(const Napi::CallbackInfo& info) {
