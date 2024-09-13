@@ -10,9 +10,15 @@ using namespace winrt;
 using namespace Windows::UI::Notifications;
 using namespace Windows::Data::Xml::Dom;
 
+static bool are_notifications_supported =
+  Windows::Foundation::Metadata::ApiInformation::IsApiContractPresent(
+    L"Windows.Foundation.UniversalApiContract", 65536);
+static bool is_expires_on_reboot_supported =
+  Windows::Foundation::Metadata::ApiInformation::IsPropertyPresent(
+    L"Windows.UI.Notifications.ToastNotification", L"ExpiresOnReboot");
+
 void EnsureNotificationsSupported(Napi::Env env) {
-  if (!Windows::Foundation::Metadata::ApiInformation::IsApiContractPresent(
-        L"Windows.Foundation.UniversalApiContract", 65536)) {
+  if (!are_notifications_supported) {
     throw Napi::Error::New(env, "Unsupported on current OS");
   }
 }
@@ -54,8 +60,8 @@ void ShowNotification(const Napi::CallbackInfo& info) {
     ToastNotification notification(xml);
     notification.Tag(to_hstring(tag.Utf8Value()));
     notification.Group(to_hstring(group.Utf8Value()));
-    if (expiresOnReboot.Value() == true) {
-      notification.ExpiresOnReboot(true);
+    if (is_expires_on_reboot_supported) {
+      notification.ExpiresOnReboot(expiresOnReboot.Value());
     }
 
     auto notifier = ToastNotificationManager::CreateToastNotifier(
