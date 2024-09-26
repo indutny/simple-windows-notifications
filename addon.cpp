@@ -31,7 +31,7 @@ Napi::Error FromWinRTError(Napi::Env env, const winrt::hresult_error& ex) {
   snprintf(
     buf,
     sizeof(buf),
-    "WinRT exception code: %d, msg: %s", code, message.c_str());
+    "WinRT exception code: %d, msg: %ls", code, message.c_str());
   throw Napi::Error::New(env, buf);
 }
 
