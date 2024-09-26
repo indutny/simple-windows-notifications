@@ -12,7 +12,7 @@ using namespace Windows::Data::Xml::Dom;
 
 static bool are_notifications_supported =
   Windows::Foundation::Metadata::ApiInformation::IsApiContractPresent(
-    L"Windows.Foundation.UniversalApiContract", 65536);
+    L"Windows.Foundation.UniversalApiContract", static_cast<uint16_t>(65536));
 static bool is_expires_on_reboot_supported =
   Windows::Foundation::Metadata::ApiInformation::IsPropertyPresent(
     L"Windows.UI.Notifications.ToastNotification", L"ExpiresOnReboot");
