@@ -24,18 +24,8 @@ if (process.platform === 'win32') {
         `${process.platform}-${process.arch}`,
         '@indutny+simple-windows-notifications.node',
       ],
-      [
-        'module_root',
-        'build',
-        'Release',
-        'bindings',
-      ],
-      [
-        'module_root',
-        'build',
-        'Debug',
-        'bindings',
-      ],
+      ['module_root', 'build', 'Release', 'bindings'],
+      ['module_root', 'build', 'Debug', 'bindings'],
     ],
   });
 }
