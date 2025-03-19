@@ -7,14 +7,12 @@
   "module": "dist/esm/index.js",
   "files": [
     "prebuilds/**/*.node",
-    "addon.cpp",
     "dist",
     "!dist/tsconfig.tsbuildinfo",
     "!dist/esm/tsconfig.tsbuildinfo",
     "!dist/test",
     "!dist/esm/test",
-    "README.md",
-    "binding.gyp"
+    "README.md"
   ],
   "scripts": {
     "install": "node-gyp-build",

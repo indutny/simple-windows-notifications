@@ -16,12 +16,25 @@ type BindingType = Readonly<{
 let binding: BindingType | undefined;
 if (process.platform === 'win32') {
   binding = loadBinding({
-    bindings: 'simple-windows-notifications',
+    bindings: '@indutny+simple-windows-notifications',
     try: [
       [
+        'module_root',
         'prebuilds',
         `${process.platform}-${process.arch}`,
-        '@indutny+simple-windows-notifications.node',
+        'bindings',
+      ],
+      [
+        'module_root',
+        'build',
+        'Release',
+        'bindings',
+      ],
+      [
+        'module_root',
+        'build',
+        'Debug',
+        'bindings',
       ],
     ],
   });
