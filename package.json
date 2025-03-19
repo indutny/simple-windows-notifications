@@ -15,7 +15,6 @@
     "README.md"
   ],
   "scripts": {
-    "install": "node-gyp-build",
     "watch": "npm run build:cjs -- --watch",
     "build": "npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc",
