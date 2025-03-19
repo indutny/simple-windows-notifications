@@ -7,7 +7,7 @@
           "<!(node -p \"require('node-addon-api').targets\"):node_addon_api_except",
         ],
         "sources": [
-          "src/addon.cpp",
+          "addon.cpp",
         ],
         "msvs_settings": {
           "VCCLCompilerTool": {
