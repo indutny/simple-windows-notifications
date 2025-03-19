@@ -49,9 +49,8 @@ jobs:
       - name: Download built libraries
         uses: actions/download-artifact@v4
         with:
-          pattern: prebuilds-*
+          pattern: prebuilds
           path: prebuilds
-          merge-multiple: true
 
       - name: Install node_modules
         run: npm ci
