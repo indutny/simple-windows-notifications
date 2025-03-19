@@ -57,10 +57,10 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm build
+        run: npm run build
 
       - name: Lint
-        run: npm lint
+        run: npm run lint
 
       - run: npm test
         env:
