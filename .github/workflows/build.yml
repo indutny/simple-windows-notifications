@@ -9,6 +9,11 @@ jobs:
   prebuild:
     runs-on: windows-latest
 
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,8 +26,19 @@ jobs:
 
       - name: Prebuild
         run: npm run prebuildify
+
+      - name: Generate x64 attestation
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        with:
+          subject-path: prebuilds/win32-x64/@indutny+simple-windows-notifications.node
+
       - name: Prebuild arm64
         run: npm run prebuildify -- --arch arm64
+
+      - name: Generate arm64 attestation
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
+        with:
+          subject-path: prebuilds/win32-arm64/@indutny+simple-windows-notifications.node
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -36,6 +52,10 @@ jobs:
     runs-on: windows-latest
 
     needs: prebuild
+
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout
@@ -67,6 +87,4 @@ jobs:
           PREBUILDS_ONLY: 1
 
       - name: Publish
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --provenance
