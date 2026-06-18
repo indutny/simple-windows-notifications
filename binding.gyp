@@ -9,6 +9,9 @@
         "sources": [
           "addon.cpp",
         ],
+        "libraries": [
+          "runtimeobject.lib",
+        ],
         "msvs_settings": {
           "VCCLCompilerTool": {
             "ExceptionHandling": 1, # /EHsc,
