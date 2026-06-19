@@ -8,54 +8,17 @@ on:
 
 jobs:
   windows:
-    runs-on: windows-latest
-
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest, windows-2019]
         node-version: [lts/*, latest]
 
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build
-      - run: npm run lint
-      - run: npm test
-
-  windows2019:
-    runs-on: windows-2019
-
-    strategy:
-      matrix:
-        node-version: [lts/*, latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build
-      - run: npm run lint
-      - run: npm test
-
-  ubuntu:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [lts/*, latest]
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
