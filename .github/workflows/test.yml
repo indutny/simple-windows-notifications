@@ -10,7 +10,7 @@ jobs:
   windows:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, windows-2019]
+        os: [ubuntu-latest, windows-latest, windows-2022]
         node-version: [lts/*, latest]
 
     runs-on: ${{ matrix.os }}
